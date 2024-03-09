@@ -1,5 +1,12 @@
 import sqlite3
 import pickle
+from PIL import Image
+import torchvision.transforms as transforms
+transform = transforms.Compose([
+    transforms.ToTensor(),
+])
+from facenet_pytorch import InceptionResnetV1
+resnet = InceptionResnetV1(pretrained='vggface2').eval()
 def deco(func):
     
     conn = sqlite3.connect('employees.db')
@@ -21,6 +28,7 @@ def deco(func):
 #              embedding BLOB NOT NULL)''')
 @deco
 def add_employee(name, role, embedding, c=None):  
+    embedding = pickle.dumps(embedding)
     c.execute("INSERT INTO employees (name, role, embedding) VALUES (?, ?, ?)", (name, role, sqlite3.Binary(embedding)))
 
 @deco
@@ -38,11 +46,9 @@ def store_embedding_in_database(embedding,c=None):
 def delete_employee(employee_id, c=None):
     c.execute("DELETE FROM employees WHERE id = ?", (employee_id,))
 
-
-
-    
-
-
+for i in range(2,8):
+    delete_employee(i)
+#delete_employee(3)
 
 
 
