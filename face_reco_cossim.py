@@ -26,7 +26,7 @@ def recognize_face(cord, threshold=0.6):
         if similarity > threshold:
             return employee[1]
     
-    # Non-blocking user input using curses
+    
     name = get_user_input()
     if name:
         add_employee(name, "programmer", embedding)
@@ -34,12 +34,12 @@ def recognize_face(cord, threshold=0.6):
     return "Stranger"
 
 def get_user_input():
-    screen = curses.initscr()  # initialize curses screen
-    curses.cbreak()  # disable line buffering
+    screen = curses.initscr()  
+    curses.cbreak()  
     screen.addstr(0, 0, "Please enter the name of the stranger: ")
     screen.refresh()
-    name = screen.getstr()  # get user input without blocking
-    curses.endwin()  # end curses
+    name = screen.getstr()  
+    curses.endwin()  
     return name.decode('utf-8').rstrip() 
 
 def calculate_similarity(embedding1, embedding2):
